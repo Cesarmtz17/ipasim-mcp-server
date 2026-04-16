@@ -1,23 +1,37 @@
 # ipaSim MCP Server
 
-MCP (Model Context Protocol) server that lets Claude (or any MCP client) control an iOS emulator running on Windows via [ipaSim](https://github.com/ipasimulator/ipasim).
+> **⚠️ This is a proof-of-concept / educational project. It does NOT run real iOS apps.**
 
-Claude can see the emulator screen, tap buttons, swipe, type text, and interact with iOS apps — all through natural language.
+MCP server that lets Claude control [ipaSim](https://github.com/ipasimulator/ipasim), a 2019 research project that emulates a very limited subset of iOS on Windows.
 
-## Important limitations
+## What ipaSim actually is
 
-**This is a proof-of-concept, not a production iOS testing tool.**
+ipaSim was a **university thesis project** by Jan Joneš (2019). It is NOT a real iOS emulator. Here's what it does and doesn't do:
 
-- **Only runs legacy Objective-C apps** compiled specifically for ipaSim/WinObjC. It includes 4 sample apps (HelloWorld, SampleApp calculator, SampleGame, IpasimBenchmark).
-- **Cannot run modern iOS apps**: React Native, Expo, Flutter, Swift, SwiftUI apps will NOT work. These need Apple's real iOS runtime.
-- **Cannot run .ipa files** from the App Store or Xcode builds.
-- **ipaSim is a 2019 research project** (thesis by Jan Joneš) with limited API coverage. It was never intended as a full iOS simulator replacement.
-- **Windows only** (requires Win32 APIs for window automation).
+### ❌ What it CANNOT do
+- **Cannot run your app** — no React Native, Expo, Flutter, Swift, SwiftUI, or any modern iOS app
+- **Cannot run .ipa files** — not from Xcode, not from the App Store, not from EAS Build
+- **Cannot replace Xcode Simulator** — it's not even close
+- **No Swift support** — only Objective-C
+- **No App Store apps** — none at all
+- **Limited iOS APIs** — CoreData, AVFoundation, CoreLocation, etc. are mostly stubs
 
-If you need to test real iOS apps, use:
-- **Xcode Simulator** (macOS only)
-- **BrowserStack / Sauce Labs** (cloud-based real devices)
-- **Expo Go** (for React Native/Expo development)
+### ✅ What it CAN do
+- Run **4 sample Objective-C apps** that were specifically compiled for it in 2019:
+  - HelloWorld (shows text)
+  - SampleApp (basic calculator)
+  - SampleGame (simple game)
+  - IpasimBenchmark
+- Demonstrate how MCP tools can control a desktop application via Win32 automation
+- Serve as a learning exercise for building MCP servers
+
+### If you need to test real apps, use these instead:
+
+| Solution | iOS | Android | Cost | Link |
+|----------|-----|---------|------|------|
+| **Android Emulator MCP** | ❌ | ✅ Any APK | Free | [android-emulator-mcp](https://github.com/Cesarmtz17/android-emulator-mcp) |
+| **BrowserStack MCP** | ✅ Real iPhones | ✅ Real Androids | Paid (100 min free trial) | [browserstack-device-mcp](https://github.com/Cesarmtz17/browserstack-device-mcp) |
+| **Xcode Simulator** | ✅ Full support | ❌ | Free (macOS only) | Built into Xcode |
 
 ## What it's good for
 
