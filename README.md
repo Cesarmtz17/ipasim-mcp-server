@@ -4,6 +4,28 @@ MCP (Model Context Protocol) server that lets Claude (or any MCP client) control
 
 Claude can see the emulator screen, tap buttons, swipe, type text, and interact with iOS apps — all through natural language.
 
+## Important limitations
+
+**This is a proof-of-concept, not a production iOS testing tool.**
+
+- **Only runs legacy Objective-C apps** compiled specifically for ipaSim/WinObjC. It includes 4 sample apps (HelloWorld, SampleApp calculator, SampleGame, IpasimBenchmark).
+- **Cannot run modern iOS apps**: React Native, Expo, Flutter, Swift, SwiftUI apps will NOT work. These need Apple's real iOS runtime.
+- **Cannot run .ipa files** from the App Store or Xcode builds.
+- **ipaSim is a 2019 research project** (thesis by Jan Joneš) with limited API coverage. It was never intended as a full iOS simulator replacement.
+- **Windows only** (requires Win32 APIs for window automation).
+
+If you need to test real iOS apps, use:
+- **Xcode Simulator** (macOS only)
+- **BrowserStack / Sauce Labs** (cloud-based real devices)
+- **Expo Go** (for React Native/Expo development)
+
+## What it's good for
+
+- Demonstrating MCP server capabilities with a visual emulator
+- Learning how to build MCP tools that interact with desktop applications
+- Experimenting with Win32 automation from Node.js
+- Running the included ipaSim sample apps for fun
+
 ## Requirements
 
 - **Windows 10/11** (x64)
@@ -54,7 +76,7 @@ Or for Claude Desktop (`claude_desktop_config.json`):
 | Tool | Description |
 |------|-------------|
 | `open_emulator` | Launch the ipaSim iOS emulator |
-| `install_app(app_path)` | Stage a `.app` bundle and open the emulator. The app is copied to `D:\ipasim-apps\` for easy folder picker navigation. User must select the folder manually in the picker dialog. |
+| `install_app(app_path)` | Stage a `.app` bundle and open the emulator. The app is copied to `%USERPROFILE%\ipasim-apps` for easy navigation. User must select the folder manually in the picker dialog. |
 | `take_screenshot` | Capture the emulator window as a PNG image (returned as base64) |
 | `tap(x, y)` | Tap at coordinates relative to the emulator window |
 | `swipe(x1, y1, x2, y2)` | Swipe gesture from point to point |
@@ -80,22 +102,21 @@ Claude <-> MCP Server (Node.js) <-> PowerShell scripts <-> Win32 API <-> ipaSim 
 >
 > **You:** Load the SampleApp calculator
 >
-> **Claude:** *calls install_app, guides user through folder picker*
-> The app is staged. Please select `D:\ipasim-apps\SampleApp.app` in the folder picker.
+> **Claude:** *calls install_app, then tells user to select folder*
+> The app is staged. Please select the SampleApp.app folder in the picker.
 >
 > **You:** Done, it's loaded
 >
 > **Claude:** *calls take_screenshot*
 > I can see a calculator app. Let me try adding 2 + 3.
-> *calls tap(x, y) on "2", then tap on "+", then tap on "3", then tap on "="*
-> *calls take_screenshot*
+> *calls tap on "2", "+", "3", "="*
 > The result is 5!
 
 ## Known limitations
 
-- **install_app** requires manual folder selection. The UWP `FolderPicker` dialog cannot be automated programmatically from external processes (Windows security restriction).
-- Only runs **Objective-C** iOS apps. Swift/SwiftUI apps are not supported by ipaSim.
-- ipaSim itself is a 2019 project with limited iOS API coverage. Complex apps may not work.
+- **install_app** requires manual folder selection. The UWP `FolderPicker` dialog cannot be automated from external processes (Windows security restriction).
+- Only Objective-C apps work. No Swift, SwiftUI, React Native, Expo, or Flutter.
+- ipaSim has limited iOS API coverage — complex apps will crash.
 
 ## License
 

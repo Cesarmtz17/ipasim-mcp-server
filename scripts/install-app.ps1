@@ -13,7 +13,7 @@ if ($appName -notlike "*.app") {
 }
 
 # Copy .app to a simple staging path for easy folder picker navigation
-$stagingDir = "D:\ipasim-apps"
+$stagingDir = Join-Path $env:USERPROFILE "ipasim-apps"
 New-Item -ItemType Directory -Path $stagingDir -Force | Out-Null
 
 $dest = Join-Path $stagingDir $appName

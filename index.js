@@ -37,7 +37,7 @@ server.tool(
 
 server.tool(
   "install_app",
-  "Stage an iOS .app bundle and launch the emulator with its folder picker open. The app is copied to D:\\ipasim-apps for easy navigation. After calling this, use take_screenshot + tap to navigate the folder picker to D:\\ipasim-apps and select the .app folder.",
+  "Stage an iOS .app bundle and launch the emulator with its folder picker open. The app is copied to %USERPROFILE%\\ipasim-apps for easy navigation. After calling this, use take_screenshot + tap to navigate the folder picker and select the .app folder.",
   { app_path: z.string().describe("Absolute path to the .app folder") },
   async ({ app_path }) => {
     const { stdout } = await runPS("install-app.ps1", ["-AppPath", app_path]);
